@@ -1,0 +1,14 @@
+{
+  "name": "quickstart",
+  "version": "0.0.0",
+  "description": "oso Node.js quickstart",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osohq/oso-nodejs/quickstart"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "oso": ">=0.6.0"
+  }
+}
