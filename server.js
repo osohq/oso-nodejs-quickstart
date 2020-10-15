@@ -18,17 +18,17 @@ async function start() {
     // or the requested expense ID doesn't exist in our "database"
     if (resource !== 'expenses' || !expense) {
       res.writeHead(404);
-      return res.end('Not Found!');
+      return res.end('Not Found!\n');
     }
 
     const actor = req.headers['user'];
     const action = req.method;
 
     if (await oso.isAllowed(actor, action, expense)) {
-      res.end(inspect(expense));
+      res.end(inspect(expense) + '\n');
     } else {
       res.writeHead(403);
-      res.end('Not Authorized!');
+      res.end('Not Authorized!\n');
     }
   }).listen(5050, () => console.log('server running on port 5050'));
 }
