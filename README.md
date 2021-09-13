@@ -18,7 +18,7 @@ should see a 404.
 
 Add this code to `main.polar`:
 ```python
-has_permission(_, "read", repository: Repository) if
+has_permission(_user: User, "read", repository: Repository) if
   repository.isPublic;
 ```
 
