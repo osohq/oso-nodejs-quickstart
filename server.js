@@ -1,36 +1,33 @@
-const { createServer } = require('http');
-const { inspect } = require('util');
-const { Oso } = require('oso');
-
-const { Expense, db } = require('./expense');
+const { Oso, NotFoundError } = require("oso");
+const { User, Repository } = require("./models");
+const express = require("express");
 
 async function start() {
   const oso = new Oso();
-  oso.registerClass(Expense);
-  await oso.loadFile('expenses.polar');
+  oso.registerClass(User);
+  oso.registerClass(Repository);
+  await oso.loadFiles(["main.polar"]);
 
-  createServer(async function (req, res) {
-    const [, resource, id] = req.url.split('/');
-    // Look up the requested expense in our "database"
-    const expense = db[parseInt(id)];
+  const app = express();
 
-    // 404 if the requested path doesn't match /expenses/:id
-    // or the requested expense ID doesn't exist in our "database"
-    if (resource !== 'expenses' || !expense) {
-      res.writeHead(404);
-      return res.end('Not Found!\n');
+  app.get("/repo/:name", async (req, res) => {
+    const name = req.params.name;
+    const repo = Repository.getByName(name);
+    const user = User.getCurrentUser();
+
+    try {
+      await oso.authorize(user, "read", repo);
+      res.send(`<h1>A Repo</h1><p>Welcome to repo ${repo.name}</p>`);
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        res.status(404);
+        res.send(`<h1>Whoops!</h1><p>Repo named ${name} was not found</p>`);
+      } else {
+        throw e;
+      }
     }
-
-    const actor = req.headers['user'];
-    const action = req.method;
-
-    if (await oso.isAllowed(actor, action, expense)) {
-      res.end(inspect(expense) + '\n');
-    } else {
-      res.writeHead(403);
-      res.end('Not Authorized!\n');
-    }
-  }).listen(5050, () => console.log('server running on port 5050'));
+  });
+  app.listen(5000, () => console.log("Server running on port 5000"));
 }
 
 start();
