@@ -1,3 +1,6 @@
+allow(actor, action, resource) if
+  has_permission(actor, action, resource);
+
 actor User {}
 
 resource Repository {
@@ -17,9 +20,3 @@ has_role(actor: User, role_name: String, repository: Repository) if
   role in actor.roles and
   role_name = role.name and
   repository = role.repository;
-
-has_permission(_actor, "read", repository: Repository) if
-   repository.isPublic;
-
-allow(actor, action, resource) if
-  has_permission(actor, action, resource);
