@@ -1,4 +1,4 @@
-# oso Node.js Quickstart
+# Oso Node.js Quickstart
 
 Follow along [here](https://docs.osohq.com/node/getting-started/quickstart.html).
 
