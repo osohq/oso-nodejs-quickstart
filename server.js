@@ -1,13 +1,10 @@
-const { Oso, NotFoundError } = require("oso");
+const { NotFoundError } = require("oso");
 const { User, Repository } = require("./models");
+const { initOso } = require("./oso");
 const express = require("express");
 
 async function start() {
-  const oso = new Oso();
-  oso.registerClass(User);
-  oso.registerClass(Repository);
-  await oso.loadFiles(["main.polar"]);
-
+  const oso = await initOso();
   const app = express();
 
   app.get("/repo/:name", async (req, res) => {
