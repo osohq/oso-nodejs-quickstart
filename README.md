@@ -15,9 +15,9 @@ If you’re building authorization for more than one service or want to share a 
 ## Make some changes
 
 If you visit
-[http://localhost:5000/repo/gmail](http://localhost:5000/repo/gmail), you
+[http://localhost:8080/repo/gmail](http://localhost:8080/repo/gmail), you
 should get a 200 response. If you visit
-[http://localhost:5000/repo/react](http://localhost:5000/repo/react), you
+[http://localhost:8080/repo/react](http://localhost:8080/repo/react), you
 should see a 404.
 
 Add this code to `main.polar`:
@@ -27,6 +27,6 @@ has_permission(_user: User, "read", repository: Repository) if
 ```
 
 Now, when you visit
-[http://localhost:5000/repo/react](http://localhost:5000/repo/react), you should
+[http://localhost:8080/repo/react](http://localhost:8080/repo/react), you should
 see a proper 200 response, because the `react` repository is marked as public
 in `models.js`.
